@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text _gameoverText;
     [SerializeField] private Sprite[] _livesSprites;
     [SerializeField] private Text _restartText;
+    [SerializeField] private Text _remainingShieldText;
 
     private GameManager _gameManager;
 
@@ -46,6 +47,20 @@ public class UIManager : MonoBehaviour
         if (lives == 0)
         {
             GameOverSequence();
+        }
+    }
+
+    // Phase I: Framework - Quiz - Shield Strength
+    public void SetRemainingShield(int shields)
+    {
+        if (shields == 0)
+        {
+            _remainingShieldText.gameObject.SetActive(false);
+        }
+        else
+        {
+            _remainingShieldText.text = "Remaining Shield: " + shields;
+            _remainingShieldText.gameObject.SetActive(true);
         }
     }
 

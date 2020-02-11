@@ -15,8 +15,17 @@ public class Player : MonoBehaviour
     
     [SerializeField] private bool _isTripleShotActive = false;
     [SerializeField] private bool _isSpeedupActive = false;
-    [SerializeField] private bool _isShieldActive = false;
+    // [SerializeField] private bool _isShieldActive = false;
+    
+    // Phase I: Framework - Quiz - Shield Strength
+    [SerializeField] private int _shieldCount = 3;
+    private Color[] _shieldHitColor;
+    
     [SerializeField] private GameObject _shieldVisualizer;
+
+    // Phase I: Framework - Quiz - Thrusters
+    [SerializeField] private bool _isThrusterBoost = false;
+    [SerializeField] private float _increasedRate = 2.0f;
 
     [SerializeField] private int _score = 0;
 
@@ -55,6 +64,12 @@ public class Player : MonoBehaviour
         {
             _audioSource.clip = _laserSoundClip;
         }
+        
+        // Phase I: Framework - Quiz - Shield Strength
+        _shieldHitColor = new Color[3];
+        _shieldHitColor[0] = Color.white;// new Color(255, 255, 255 );
+        _shieldHitColor[1] = Color.blue; // new Color(0, 255, 0);
+        _shieldHitColor[2] = Color.red; // new Color(75, 56, 54);
     }
 
     // Update is called once per frame
@@ -65,6 +80,16 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
         {
             FireLaser();
+        }
+
+        // Phase I: Framework - Quiz - Thrusters 
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            _isThrusterBoost = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            _isThrusterBoost = false;
         }
     }
 
@@ -79,6 +104,12 @@ public class Player : MonoBehaviour
         if (_isSpeedupActive)
         {
             speed = _speed * _speedBoostMultiplier;
+        }
+        
+        // Phase I: Framework - Quiz - Thrusters   
+        if (_isThrusterBoost)
+        {
+            speed = speed * _increasedRate;
         }
 
         transform.Translate(direction * speed * Time.deltaTime);
@@ -113,12 +144,25 @@ public class Player : MonoBehaviour
         _audioSource.Play();
     }
 
+    // Phase I: Framework - Quiz - Shield Strength
     public void Damage(int damageLevel = 1)
     {
-        if (_isShieldActive)
+        SpriteRenderer spriteRenderer;
+        if (_shieldCount > 0)
         {
-            _isShieldActive = false;
-            _shieldVisualizer.SetActive(false);
+            // _isShieldActive = false;
+            _shieldCount--;
+            _uiManager.SetRemainingShield(_shieldCount);    
+            
+            if (_shieldCount == 0)
+            {
+                _shieldVisualizer.SetActive(false);
+            }
+            else
+            {
+                spriteRenderer = _shieldVisualizer.GetComponent<SpriteRenderer>();
+                spriteRenderer.color = _shieldHitColor[3 - _shieldCount];
+            }
             return;
         }
         
@@ -172,8 +216,13 @@ public class Player : MonoBehaviour
 
     public void EnableShield()
     {
-        _isShieldActive = true;
+        // _isShieldActive = true;
+        _shieldCount = 3;
         _shieldVisualizer.SetActive(true);
+        _uiManager.SetRemainingShield(_shieldCount);
+        
+        SpriteRenderer spriteRenderer = _shieldVisualizer.GetComponent<SpriteRenderer>();
+        spriteRenderer.color = _shieldHitColor[0];
     }
 
     public void AddScore(int points)
