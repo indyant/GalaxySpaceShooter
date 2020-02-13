@@ -25,6 +25,7 @@ public class SpawnManager : MonoBehaviour
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
+        StartCoroutine(SpawnNewPowerupRoutine());
     }
 
     // Update is called once per frame
@@ -54,8 +55,21 @@ public class SpawnManager : MonoBehaviour
         {
             yield return new WaitForSeconds(Random.Range(3.0f, 7.0f));
             Vector3 powerupPosition = new Vector3(Random.Range(_leftBound, _rightBound), 6, 0);
-            int randomPowerup = Random.Range(0, 3);
+            int randomPowerup = Random.Range(0, 5);
             GameObject newPowerup = Instantiate(_powerups[randomPowerup], powerupPosition, Quaternion.identity);
+            newPowerup.transform.parent = transform;
+        }
+    }
+
+    IEnumerator SpawnNewPowerupRoutine()
+    {
+        yield return new WaitForSeconds(10.0f);
+        
+        while (_stopSpawning == false)
+        {
+            yield return new WaitForSeconds(Random.Range(10.0f, 20.0f));
+            Vector3 powerupPosition = new Vector3(Random.Range(_leftBound, _rightBound), 6, 0);
+            GameObject newPowerup = Instantiate(_powerups[5], powerupPosition, Quaternion.identity);
             newPowerup.transform.parent = transform;
         }
     }

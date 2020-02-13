@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -11,6 +13,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite[] _livesSprites;
     [SerializeField] private Text _restartText;
     [SerializeField] private Text _remainingShieldText;
+    [SerializeField] private Text _ammoCountText;
+    
+    [SerializeField] private Slider _thrusterSlider;
+    [SerializeField] private bool _isThrusterBoost = false;
+    private bool _isThrusterBoostEnabled = true;
 
     private GameManager _gameManager;
 
@@ -25,6 +32,8 @@ public class UIManager : MonoBehaviour
          {
              Debug.Log("_gameManager is null");
          }
+
+         StartCoroutine(DecreaseThrusterBoost());
     }
 
     // Update is called once per frame
@@ -64,13 +73,18 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // Phase I: Framework - Quiz - Ammo Count
+    public void SetAmmoCount(int ammo)
+    {
+        _ammoCountText.text = "Ammo: " + ammo;
+    }
+    
     void GameOverSequence()
     {
         _gameoverText.gameObject.SetActive(true);
         _restartText.gameObject.SetActive(true);
         _isGameOver = true;
         _gameManager.GameOver();
-        StartCoroutine(BlinkingGameOverRoutine());
     }
 
     IEnumerator BlinkingGameOverRoutine()
@@ -82,5 +96,79 @@ public class UIManager : MonoBehaviour
             _gameoverText.text = "";
             yield return new WaitForSeconds(0.5f);
         }
+    }
+
+    public void SetThrusterBoostActive()
+    {
+        if (_isThrusterBoostEnabled)
+        {
+            _isThrusterBoost = true;
+            _isThrusterBoostEnabled = false;
+
+            StartCoroutine(DecreaseThrusterBoost());
+        }
+    }
+
+    public bool IsThrusterBoostActive()
+    {
+        return _isThrusterBoost;
+    }
+
+    public void ResetThrusterBoost()
+    {
+        _isThrusterBoost = false;
+        StartCoroutine(IncreaseThrusterBoost());
+    }
+
+    // Phase I: Framework - Quiz - Thruster: Scaling Bar HUD
+    IEnumerator DecreaseThrusterBoost()
+    {
+        while (_isThrusterBoost)
+        {
+            if (_thrusterSlider.value > 0)
+            {
+                _thrusterSlider.value -= 0.02f;
+                if (_thrusterSlider.value <= 0)
+                {
+                    _thrusterSlider.value = 0;
+                    _isThrusterBoost = false;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(0.1f);
+                }
+            }
+            else
+            {
+                _thrusterSlider.value = 0;
+                _isThrusterBoost = false;
+            }
+        }
+    }
+
+    IEnumerator IncreaseThrusterBoost()
+    {
+        while (!_isThrusterBoost && !_isThrusterBoostEnabled)
+        {
+            if (_thrusterSlider.value < 1.0f)
+            {
+                _thrusterSlider.value += 0.02f;
+                if (_thrusterSlider.value >= 1.0f)
+                {
+                    _thrusterSlider.value = 1.0f;
+                    _isThrusterBoostEnabled = true;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(0.1f);
+                }
+            }
+            else
+            {
+                _thrusterSlider.value = 1.0f;
+                _isThrusterBoostEnabled = true;
+            }
+        }
+        
     }
 }

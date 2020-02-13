@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\jayyu\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\jayyu\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_GalaxySpaceShooter.-608650840.00" t="ExcludeRecursive" />
+    <e p="D:\code\Unity Projects\GalaxySpaceShooter" t="IncludeRecursive">
+      <e p=".git\info\exclude" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Materials" t="Include">
+          <e p="Shaders" t="Include">
+            <e p="Galaxy.shader" t="Include" />
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="Asteroid.cs" t="Include" />
+          <e p="CameraShake.cs" t="Include" />
+          <e p="Enemy.cs" t="Include" />
+          <e p="Explosion.cs" t="Include" />
+          <e p="GameManager.cs" t="Include" />
+          <e p="Laser.cs" t="Include" />
+          <e p="Main_Menu" t="Include">
+            <e p="MainMenu.cs" t="Include" />
+          </e>
+          <e p="Player.cs" t="Include" />
+          <e p="Powerup.cs" t="Include" />
+          <e p="SpawnManager.cs" t="Include" />
+          <e p="TripleShot.cs" t="Include" />
+          <e p="UIManager.cs" t="Include" />
+        </e>
+      </e>
+      <e p="GalaxySpaceShooter.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

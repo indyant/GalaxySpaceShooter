@@ -6,7 +6,11 @@ public class Powerup : MonoBehaviour
 {
     [SerializeField] private float _speed = 3.0f;
     
-    // _powerupID - 0: Triple_Shot, 1: Speed_Up, 2: Shield_Up
+
+    // Phase I: Framework - Quiz - Ammo Collectable
+    // Phase I: Framework - Quiz - Health Collectable
+    // Phase I: Framework - Quiz - Secondary Fire Powerup
+    // _powerupID - 0: Triple_Shot, 1: Speed_Up, 2: Shield_Up, 3: Ammo, 4: Health, 5: New
     [SerializeField] private int _powerupID = 0;
     [SerializeField] private AudioClip _audioClip;
 
@@ -26,6 +30,9 @@ public class Powerup : MonoBehaviour
         }
     }
     
+    // Phase I: Framework - Quiz - Ammo Collectable
+    // Phase I: Framework - Quiz - Health Collectable
+    // Phase I: Framework - Quiz - Secondary Fire Powerup
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
@@ -45,6 +52,15 @@ public class Powerup : MonoBehaviour
                         break;
                     case 2:
                         player.EnableShield();
+                        break;
+                    case 3:
+                        player.AddAmmo();
+                        break;
+                    case 4:
+                        player.RecoverHealth();
+                        break;
+                    case 5:
+                        player.EnableMultiShot();
                         break;
                     default:
                         Debug.Log("Invalid _powerupID");
