@@ -16,6 +16,9 @@
           <e p="Asteroid.cs" t="Include" />
           <e p="CameraShake.cs" t="Include" />
           <e p="Enemy.cs" t="Include" />
+          <e p="EnemyBehaviour.cs" t="Include" />
+          <e p="EnemyMovementStraight.cs" t="Include" />
+          <e p="EnemyMovementZigzag.cs" t="Include" />
           <e p="Explosion.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />
           <e p="Laser.cs" t="Include" />
@@ -25,6 +28,7 @@
           <e p="Player.cs" t="Include" />
           <e p="Powerup.cs" t="Include" />
           <e p="SpawnManager.cs" t="Include" />
+          <e p="Steering.cs" t="Include" />
           <e p="TripleShot.cs" t="Include" />
           <e p="UIManager.cs" t="Include" />
         </e>
