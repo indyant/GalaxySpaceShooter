@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
 
     // Phase I: Framework - Quiz - Ammo Count
     [SerializeField] private int _ammoCount = 15;
+    private const int _maxAmmo = 50;
 
     [SerializeField] private GameObject _mainCamera;
     private CameraShake _camera;
@@ -86,7 +87,7 @@ public class Player : MonoBehaviour
         
         // Phase I: Framework - Quiz - Ammo Count
         _ammoCount = 15;
-        _uiManager.SetAmmoCount(_ammoCount);
+        _uiManager.SetAmmoCount(_ammoCount, _maxAmmo);
 
         _camera = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         if (_camera == null)
@@ -206,7 +207,7 @@ public class Player : MonoBehaviour
             EditorApplication.Beep();
         }
 
-        _uiManager.SetAmmoCount(_ammoCount);
+        _uiManager.SetAmmoCount(_ammoCount, _maxAmmo);
     }
 
     // Phase I: Framework - Quiz - Shield Strength
@@ -338,7 +339,11 @@ public class Player : MonoBehaviour
     public void AddAmmo()
     {
         _ammoCount += 15;
-        _uiManager.SetAmmoCount(_ammoCount);
+        if (_ammoCount > _maxAmmo)
+        {
+            _ammoCount = _maxAmmo;
+        }
+        _uiManager.SetAmmoCount(_ammoCount, _maxAmmo);
     }
 
     // Phase I: Framework - Quiz - Health Collectable

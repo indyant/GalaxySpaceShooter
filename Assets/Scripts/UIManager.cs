@@ -74,9 +74,9 @@ public class UIManager : MonoBehaviour
     }
 
     // Phase I: Framework - Quiz - Ammo Count
-    public void SetAmmoCount(int ammo)
+    public void SetAmmoCount(int ammo, int maxAmmo)
     {
-        _ammoCountText.text = "Ammo: " + ammo;
+        _ammoCountText.text = "Ammo: " + ammo + " / " + maxAmmo;
     }
     
     void GameOverSequence()
