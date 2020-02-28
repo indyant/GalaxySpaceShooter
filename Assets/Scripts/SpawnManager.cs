@@ -8,13 +8,20 @@ using Vector3 = UnityEngine.Vector3;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab;
-    [SerializeField] private float _spawnDelay = 3.0f;
+    private float _spawnDelayMin = 3.0f;
+    private float _spawnDelayMax = 5.0f; 
+    
+    private float _waveDelayMin = 30.0f;
+    private float _waveDelayMax = 40.0f;
+    [SerializeField] private int _enemyWaveAmount = 8;
+    
     [SerializeField] private GameObject _enemyContainer;
     [SerializeField] private GameObject[] _powerups;
 
     private bool _stopSpawning = false;
     private float _leftBound = -9.0f;
     private float _rightBound = 9.0f;
+    private float _waveLevel = 1;
     
     // Start is called before the first frame update
     void Start()
@@ -24,6 +31,7 @@ public class SpawnManager : MonoBehaviour
     public void StartSpawning()
     {
         StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnEnemyWave());
         StartCoroutine(SpawnPowerupRoutine());
         StartCoroutine(SpawnNewPowerupRoutine());
     }
@@ -43,7 +51,31 @@ public class SpawnManager : MonoBehaviour
             Vector3 enemyPosition = new Vector3(Random.Range(_leftBound, _rightBound), 6, 0);
             GameObject newEnemy = Instantiate(_enemyPrefab, enemyPosition, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
-            yield return new WaitForSeconds(_spawnDelay);
+            float spawnDelay = Random.Range(_spawnDelayMin, _spawnDelayMax);
+            yield return new WaitForSeconds(spawnDelay);
+        }
+    }
+
+    IEnumerator SpawnEnemyWave()
+    {
+        yield return new WaitForSeconds(Random.Range(_waveDelayMin, _waveDelayMax));
+
+        int enemyWaveCount;
+        float x = 0f;
+        float y = 0f;
+        while (_stopSpawning == false)
+        {
+            enemyWaveCount = (int) (_enemyWaveAmount * _waveLevel * 1.2);
+            _waveLevel++;
+            for (int i = 0; i < enemyWaveCount; i++)
+            {
+                x = Random.Range(_leftBound, _rightBound);
+                y = Random.Range(6.0f - 0.2f, 6.0f + 0.2f);
+                Vector3 enemyPosition = new Vector3(Random.Range(_leftBound, _rightBound), y, 0);
+                GameObject newEnemy = Instantiate(_enemyPrefab, enemyPosition, Quaternion.identity);
+                newEnemy.transform.parent = _enemyContainer.transform;
+            }
+            yield return new WaitForSeconds(Random.Range(_waveDelayMin, _waveDelayMax));
         }
     }
 

@@ -95,7 +95,7 @@ public class Enemy : MonoBehaviour
 
         if (Time.time > _canFire)
         {
-            _fireRate = Random.Range(3.0f, 7.0f);
+            _fireRate = Random.Range(2.0f, 8.0f);
             _canFire = Time.time + _fireRate;
             GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
@@ -112,12 +112,8 @@ public class Enemy : MonoBehaviour
         // transform.Translate(Vector3.down * _speed * Time.deltaTime);
         
         // Phase-II-1 
-        Debug.Log("velocity: " + _velocity);
         Vector3 displacement = _velocity * Time.deltaTime;
         _orientation += _rotation * Time.deltaTime;
-
-        Debug.Log("displacement: " + displacement.ToString("F4"));
-        
 
         if (_orientation < 0.0f)
         {
