@@ -229,7 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyPrefab: {fileID: 4958384560129742031, guid: 67e5abe92a117d34b87d183e0e2f51da,
     type: 3}
-  _spawnDelay: 3
+  _enemyWaveAmount: 8
   _enemyContainer: {fileID: 389148606}
   _powerups:
   - {fileID: 6494185537071588230, guid: 5d84bdbc5916cd1478ffdc70983cb303, type: 3}
@@ -238,6 +238,10 @@ MonoBehaviour:
   - {fileID: 298446852395925660, guid: e0d7a5184bb277e42ad1d6c7e6111c99, type: 3}
   - {fileID: 2186294868676289732, guid: 0df1c466111de7f40aad845c48bef2f8, type: 3}
   - {fileID: 3473941508049459823, guid: c06d4e61e5860ac46bd8f9e874eb0f78, type: 3}
+  - {fileID: 3495598944720040373, guid: f246d82066d8bba46998465e3e613863, type: 3}
+  - {fileID: 2558156236034524250, guid: 9e5917def3a32b545bbf16e9ba0b9bfb, type: 3}
+  - {fileID: 298446852395925660, guid: e0d7a5184bb277e42ad1d6c7e6111c99, type: 3}
+  - {fileID: 298446852395925660, guid: e0d7a5184bb277e42ad1d6c7e6111c99, type: 3}
 --- !u!4 &329178262
 Transform:
   m_ObjectHideFlags: 0
@@ -1693,7 +1697,6 @@ MonoBehaviour:
   _speed: 3
   _lives: 3
   _isTripleShotActive: 0
-  _isSpeedupActive: 0
   _isMultiShotActive: 0
   _shieldCount: 3
   _shieldVisualizer: {fileID: 580787423}
@@ -1705,7 +1708,7 @@ MonoBehaviour:
   _laserSoundClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _explosionSoundClip: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
   _audioSource: {fileID: 1374797474}
-  _ammoCount: 15
+  _ammoCount: 20
   _mainCamera: {fileID: 963194225}
 --- !u!212 &1374797471
 SpriteRenderer:

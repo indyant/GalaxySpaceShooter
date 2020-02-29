@@ -5,19 +5,21 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float _fireRate = 0.3f;
+    private const float DefaultFireRate = 0.3f;
+    [SerializeField] private float _fireRate = DefaultFireRate;
+    
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private GameObject _tripleShotPrefab;
     [SerializeField] private GameObject _multiDirectionalShotPrefab;
     private readonly float _laserSpawnOffset = 0.85f;
     private float _nextFire = -1f;
-    [SerializeField] private float _speed = 3.0f;
+
+    private const float DefaultSpeed = 3.0f;
+    [SerializeField] private float _speed = DefaultSpeed;
     [SerializeField] int _lives = 3;
     private SpawnManager _spawnManager;
     
     [SerializeField] private bool _isTripleShotActive = false;
-    [SerializeField] private bool _isSpeedupActive = false;
-    // [SerializeField] private bool _isShieldActive = false;
     
     // Phase I: Framework - Quiz - Secondary Fire Powerup
     [SerializeField] private bool _isMultiShotActive = false;
@@ -44,8 +46,10 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
 
     // Phase I: Framework - Quiz - Ammo Count
-    [SerializeField] private int _ammoCount = 15;
-    private const int _maxAmmo = 50;
+    private const int InitialAmmo = 20;
+    [SerializeField] private int _ammoCount = InitialAmmo;
+    private const int AdditionalAmmo = 20;
+    private const int _maxAmmo = 100;
 
     [SerializeField] private GameObject _mainCamera;
     private CameraShake _camera;
@@ -86,7 +90,7 @@ public class Player : MonoBehaviour
         _shieldCount = 0;
         
         // Phase I: Framework - Quiz - Ammo Count
-        _ammoCount = 15;
+        _ammoCount = InitialAmmo;
         _uiManager.SetAmmoCount(_ammoCount, _maxAmmo);
 
         _camera = GameObject.Find("Main Camera").GetComponent<CameraShake>();
@@ -127,11 +131,6 @@ public class Player : MonoBehaviour
         var direction = new Vector3(horizontalInput, verticalInput, 0);
         float speed = _speed;
 
-        if (_isSpeedupActive)
-        {
-            speed = _speed * _speedBoostMultiplier;
-        }
-        
         // Phase I: Framework - Quiz - Thrusters   
         if (_isThrusterBoost)
         {
@@ -306,16 +305,14 @@ public class Player : MonoBehaviour
 
     public void EnableSpeedup()
     {
-        _isSpeedupActive = true;
         _speed = 6.0f;
-        StartCoroutine(SpeedDownRoutine());
+        StartCoroutine(SetDefaultSpeedRoutine());
     }
 
-    IEnumerator SpeedDownRoutine()
+    IEnumerator SetDefaultSpeedRoutine()
     {
         yield return new WaitForSeconds(5.0f);
-        _isSpeedupActive = false;
-        _speed = 3.0f;
+        _speed = DefaultSpeed;
     }
 
     public void EnableShield()
@@ -338,7 +335,7 @@ public class Player : MonoBehaviour
     // Phase I: Framework - Quiz - Ammo Collectable
     public void AddAmmo()
     {
-        _ammoCount += 15;
+        _ammoCount += AdditionalAmmo;
         if (_ammoCount > _maxAmmo)
         {
             _ammoCount = _maxAmmo;
@@ -355,5 +352,23 @@ public class Player : MonoBehaviour
             _uiManager.SetLives(_lives);
             DisplayDamage();
         }
+    }
+
+    public void EnableMovementDebuff()
+    {
+        _speed = 2.0f;
+        StartCoroutine(SetDefaultSpeedRoutine());
+    }
+
+    public void EnableFireSpeedDebuff()
+    {
+        _fireRate = 0.5f;
+        StartCoroutine(SetDefaultFireSpeedRoutine());
+    }
+
+    IEnumerator SetDefaultFireSpeedRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _fireRate = DefaultFireRate;
     }
 }

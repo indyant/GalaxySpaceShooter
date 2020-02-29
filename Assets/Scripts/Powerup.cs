@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Powerup : MonoBehaviour
 {
@@ -11,7 +12,10 @@ public class Powerup : MonoBehaviour
     // Phase I: Framework - Quiz - Health Collectable
     // Phase I: Framework - Quiz - Secondary Fire Powerup
     // _powerupID - 0: Triple_Shot, 1: Speed_Up, 2: Shield_Up, 3: Ammo, 4: Health, 5: New
-    [SerializeField] private int _powerupID = 0;
+    
+    enum PowerUp {Empty, TripleShot, SpeedUp, ShieldUp, Ammo, Health, NewPowerUp, FireSpeedDebuff, MovementDebuff}
+    
+    [FormerlySerializedAs("_powerupID")] [SerializeField] private PowerUp _powerUp = PowerUp.Empty;
     [SerializeField] private AudioClip _audioClip;
 
     // Start is called before the first frame update
@@ -42,25 +46,31 @@ public class Powerup : MonoBehaviour
             AudioSource.PlayClipAtPoint(_audioClip, transform.position);
             if (player != null)
             {
-                switch (_powerupID)
+                switch (_powerUp)
                 {
-                    case 0:
+                    case PowerUp.TripleShot:
                         player.EnableTripleShot();
                         break;
-                    case 1:
+                    case PowerUp.SpeedUp:
                         player.EnableSpeedup();
                         break;
-                    case 2:
+                    case PowerUp.ShieldUp:
                         player.EnableShield();
                         break;
-                    case 3:
+                    case PowerUp.Ammo:
                         player.AddAmmo();
                         break;
-                    case 4:
+                    case PowerUp.Health:
                         player.RecoverHealth();
                         break;
-                    case 5:
+                    case PowerUp.NewPowerUp:
                         player.EnableMultiShot();
+                        break;
+                    case PowerUp.MovementDebuff:
+                        player.EnableMovementDebuff();
+                        break;
+                    case PowerUp.FireSpeedDebuff:
+                        player.EnableFireSpeedDebuff();
                         break;
                     default:
                         Debug.Log("Invalid _powerupID");
