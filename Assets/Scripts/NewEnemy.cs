@@ -1,36 +1,45 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class Enemy : MonoBehaviour
+public class NewEnemy : Enemy
 {
-    [SerializeField] protected float _speed = 4.0f;
-    protected float _screenBoundRight = 9.0f;
-    protected float _screenBoundLeft = -9.0f;
-    protected float _screenOutBottom = -6.0f;
-    protected Player _player;
-    protected Animator _anim;
+    /*
+    [SerializeField] private float _speed = 4.0f;
+    private float _screenBoundRight = 9.0f;
+    private float _screenBoundLeft = -9.0f;
+    private float _screenOutBottom = -6.0f;
+    private Player _player;
+    private Animator _anim;
     
     // Preparation for Phase-II-1 New Enemy Movement
-    protected float _maxSpeed = 10;
-    protected float _maxAccel = 10;
-    protected float _orientation;
-    protected float _rotation;
-    protected Vector3 _velocity;
-    protected Steering _steering;
+    private float _maxSpeed = 10;
+    private float _maxAccel = 10;
+    private float _orientation;
+    private float _rotation;
+    private Vector3 _velocity;
+    private Steering _steering;
 
 
-    [SerializeField] protected AudioClip _explosionSoundClip;
-    protected AudioSource _audioSource;
+    [SerializeField] private AudioClip _explosionSoundClip;
+    private AudioSource _audioSource;
 
-    [SerializeField] protected GameObject _laserPrefab;
-    protected float _fireRate = 3.0f;
-    protected float _canFire = 0f;
-
+    [SerializeField] private GameObject _laserPrefab;
+    private float _fireRate = 3.0f;
+    private float _canFire = 0f;
+*/
     // Start is called before the first frame update
-    public virtual void Start()
+
+    enum NewEnemyType
+    {
+        EnemyType1,
+        EnemyType2,
+        EnemyType3
+    };
+    
+    [SerializeField] private NewEnemyType _enemyType;
+    
+    public override void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
         if (_player == null)
@@ -57,44 +66,49 @@ public class Enemy : MonoBehaviour
         // Preparation for Phase-II-1 New Enemy Movement
         _velocity = Vector3.zero;
         _steering = new Steering();
+        EnemyMovementZigzag enemyMovementZigzag;
+        EnemyMovementWave enemyMovementWave;
 
-
-        int dirSwitch = Random.Range(0, 3);
-        EnemyMovementStraight enemyMovementStraight;
-       //  EnemyMovementZigzag enemyMovementZigzag;
-            
-        switch (dirSwitch)
+        switch (_enemyType)
         {
-            case 0: // straight down
-                enemyMovementStraight  = gameObject.AddComponent<EnemyMovementStraight>();
-                enemyMovementStraight.SetVector(new Vector3(0f, -1f, 0f));
-                break;
-            case 1: // right
-                enemyMovementStraight = gameObject.AddComponent<EnemyMovementStraight>();
-                enemyMovementStraight.SetVector(new Vector3(1f, -1f, 0f));
-                break;
-            case 2:  // left
-                enemyMovementStraight = gameObject.AddComponent<EnemyMovementStraight>();
-                enemyMovementStraight.SetVector(new Vector3(-1f, -1f, 0f));
-                break;
-            /*
-            case 3: // zigzag
+            case NewEnemyType.EnemyType1: // zigzag
                 enemyMovementZigzag = gameObject.AddComponent<EnemyMovementZigzag>();
-                enemyMovementZigzag.SetZigzag(new Vector3(-1, -1, 0), 1.5f);
+                float randomDirection = Random.value;
+                Vector3 direction;
+                if (randomDirection > 0.5f)
+                {
+                    direction = new Vector3(-1, -1, 0);
+                }
+                else
+                {
+                    direction = new Vector3(1, -1, 0);
+                }
+                enemyMovementZigzag.SetZigzag(direction, 1.3f);
                 break;
-                */
+            
+            case NewEnemyType.EnemyType2:
+                enemyMovementWave = gameObject.AddComponent<EnemyMovementWave>();
+                enemyMovementWave.SetWave(1f, 1.5f);
+                break;
+            
+            case NewEnemyType.EnemyType3:
+                enemyMovementWave = gameObject.AddComponent<EnemyMovementWave>();
+                enemyMovementWave.SetWave(1f, 1.5f);
+                break;
+            
             default:
-                enemyMovementStraight = gameObject.AddComponent<EnemyMovementStraight>();
-                enemyMovementStraight.SetVector(new Vector3(0f, -1f, 0f));
+                Debug.LogError("Invalid dirSwitch");
                 break;
         }
+        
     }
 
     // Update is called once per frame
-    public virtual void Update()
+    public override void Update()
     {
         CalculateMovement();
 
+        /*
         if (Time.time > _canFire)
         {
             _fireRate = Random.Range(2.0f, 8.0f);
@@ -107,9 +121,10 @@ public class Enemy : MonoBehaviour
                 lasers[i].AssignEnemyLaser();
             }
         }
+        */
     }
 
-    public virtual void CalculateMovement()
+    public override void CalculateMovement()
     {
         // transform.Translate(Vector3.down * _speed * Time.deltaTime);
         
@@ -129,8 +144,8 @@ public class Enemy : MonoBehaviour
         
         transform.Translate(displacement);
         transform.rotation = new Quaternion();
-        // transform.Rotate(Vector3.up, _orientation);
-        
+        transform.Rotate(Vector3.forward, _orientation);
+
         if (transform.position.y <= _screenOutBottom)
         {
             float randomX = Random.Range(_screenBoundLeft, _screenBoundRight);
@@ -138,10 +153,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public virtual void LateUpdate()
+    public override void LateUpdate()
     {
-        _velocity = _steering.linear * _speed; //  * _speed * Time.deltaTime;
-        _rotation += _steering.angular; // * Time.deltaTime;
+        _velocity = _steering.linear * _speed;  //* Time.deltaTime;
+        _rotation += _steering.angular; //  * Time.deltaTime;
 
         if (_velocity.magnitude > _maxSpeed)
         {
@@ -162,18 +177,18 @@ public class Enemy : MonoBehaviour
         _steering = new Steering();
     }
     
-    public virtual void OnTriggerEnter2D(Collider2D other)
+    public override void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
             _player.AddScore(10);
-            _anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("OnNewEnemyDeath");
             _speed = 0;
             _audioSource.Play();
             Destroy(GetComponent<Collider2D>());
             _canFire += 10.0f;
-            Destroy(gameObject, 2.8f);
+            Destroy(gameObject, 1.0f);
         }
         else if (other.tag == "Player")
         {
@@ -182,17 +197,16 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
-            _anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("OnNewEnemyDeath");
             _speed = 0;
             _audioSource.Play();
             _canFire += 10.0f;
-            Destroy(gameObject, 2.8f);
+            Destroy(gameObject, 1.0f);
         }
     }
 
-    public virtual void SetSteering(Steering steering)
+    public override void SetSteering(Steering steering)
     {
-        // Debug.Log("Steering.linear = " + steering.linear);
         _steering = steering;
-    }
+    } 
 }

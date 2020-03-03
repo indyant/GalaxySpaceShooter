@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class EnemyMovementZigzag : EnemyBehaviour
+public class EnemyMovementWave : EnemyBehaviour
  {
      private Steering steering;
      private Vector3 _direction;
      private float _duration = 1.0f;
+     private float _radian = 0f;
+     private float _height = 1f;
 
      private bool _stopMovement = true;
-     private Vector3 _reverseDirection;
+     private float TwoPI;
 
     public virtual void Awake()
     {
@@ -20,33 +22,34 @@ public class EnemyMovementZigzag : EnemyBehaviour
      
      public void Start()
      {
-         _reverseDirection = new Vector3(-1, 1, 0);
+         TwoPI = 2 * Mathf.PI;
      }
 
      public override Steering GetSteering()
      {
-         steering.linear = _direction;
+         _radian += (Mathf.PI / _duration) * Time.deltaTime;
+
+         if (_radian > TwoPI)
+         {
+             _radian -= TwoPI;
+         }
+
+         steering.linear.x = Mathf.Sin(_radian) * _height;
+         steering.linear.y = -1.0f;
+         steering.linear.Normalize();
+         
          return steering;
      }
  
-     public void SetZigzag(Vector3 direction, float duration)
+     public void SetWave(float height, float duration)
      {
          steering = new Steering();
-         _direction = direction;
+         
+         steering.linear.y = -1.0f;
+         _radian = 0;
+         _height = height;
          _duration = duration;
          _stopMovement = false;
-
-         StartCoroutine(ChangeDirectionRoutine());
      }
-     
-    IEnumerator ChangeDirectionRoutine()
-    {
-        while (_stopMovement == false)
-        {
-            yield return new WaitForSeconds(_duration);
-            _direction.x *= -1;
-        }
-    }
-     
  }
 

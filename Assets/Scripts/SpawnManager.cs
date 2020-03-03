@@ -7,7 +7,8 @@ using Vector3 = UnityEngine.Vector3;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _enemyPrefab;
+    // [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private GameObject[] _enemyPrefab;
     private float _spawnDelayMin = 3.0f;
     private float _spawnDelayMax = 5.0f; 
     
@@ -45,11 +46,13 @@ public class SpawnManager : MonoBehaviour
     IEnumerator SpawnEnemyRoutine()
     {
         yield return new WaitForSeconds(3.0f);
-        
+
+        int enemyType = 0;
         while (_stopSpawning == false)
         {
+            enemyType = Random.Range(0, 4);
             Vector3 enemyPosition = new Vector3(Random.Range(_leftBound, _rightBound), 6, 0);
-            GameObject newEnemy = Instantiate(_enemyPrefab, enemyPosition, Quaternion.identity);
+            GameObject newEnemy = Instantiate(_enemyPrefab[enemyType], enemyPosition, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
             float spawnDelay = Random.Range(_spawnDelayMin, _spawnDelayMax);
             yield return new WaitForSeconds(spawnDelay);
@@ -63,6 +66,8 @@ public class SpawnManager : MonoBehaviour
         int enemyWaveCount;
         float x = 0f;
         float y = 0f;
+        int enemyType = 0;
+        
         while (_stopSpawning == false)
         {
             enemyWaveCount = (int) (_enemyWaveAmount * _waveLevel * 1.2);
@@ -70,9 +75,10 @@ public class SpawnManager : MonoBehaviour
             for (int i = 0; i < enemyWaveCount; i++)
             {
                 x = Random.Range(_leftBound, _rightBound);
-                y = Random.Range(6.0f - 0.2f, 6.0f + 0.2f);
+                y = Random.Range(6.0f - 0.5f, 6.0f + 0.5f);
+                enemyType = Random.Range(0, 4);
                 Vector3 enemyPosition = new Vector3(Random.Range(_leftBound, _rightBound), y, 0);
-                GameObject newEnemy = Instantiate(_enemyPrefab, enemyPosition, Quaternion.identity);
+                GameObject newEnemy = Instantiate(_enemyPrefab[enemyType], enemyPosition, Quaternion.identity);
                 newEnemy.transform.parent = _enemyContainer.transform;
             }
             yield return new WaitForSeconds(Random.Range(_waveDelayMin, _waveDelayMax));

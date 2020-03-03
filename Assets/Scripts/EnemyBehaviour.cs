@@ -7,11 +7,6 @@ public class EnemyBehaviour : MonoBehaviour
 {
     public GameObject _target;
     protected Enemy enemy;
-    
-    public virtual void Awake()
-    {
-        enemy = gameObject.GetComponent<Enemy>();
-    }
 
     // Update is called once per frame
     public virtual void Update()
