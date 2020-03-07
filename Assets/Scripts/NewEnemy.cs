@@ -28,6 +28,8 @@ public class NewEnemy : Enemy
     private float _fireRate = 3.0f;
     private float _canFire = 0f;
 */
+    [SerializeField] private GameObject _missilePrefab;
+    
     // Start is called before the first frame update
 
     enum NewEnemyType
@@ -93,14 +95,15 @@ public class NewEnemy : Enemy
             
             case NewEnemyType.EnemyType3:
                 enemyMovementWave = gameObject.AddComponent<EnemyMovementWave>();
-                enemyMovementWave.SetWave(1f, 1.5f);
+                enemyMovementWave.SetWave(1f, 3f);
                 break;
             
             default:
                 Debug.LogError("Invalid dirSwitch");
                 break;
         }
-        
+        _fireRate = Random.Range(2.0f, 4.0f);
+        _canFire = Time.time + _fireRate;
     }
 
     // Update is called once per frame
@@ -108,20 +111,33 @@ public class NewEnemy : Enemy
     {
         CalculateMovement();
 
-        /*
         if (Time.time > _canFire)
         {
-            _fireRate = Random.Range(2.0f, 8.0f);
-            _canFire = Time.time + _fireRate;
-            GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
-            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
-
-            for (int i = 0; i < lasers.Length; i++)
+            switch (_enemyType)
             {
-                lasers[i].AssignEnemyLaser();
+                case NewEnemyType.EnemyType1:
+                case NewEnemyType.EnemyType2:
+                    _fireRate = Random.Range(2.0f, 5.0f);
+                    _canFire = Time.time + _fireRate;
+                    GameObject enemyLaser =
+                        Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+                    Laser laser = enemyLaser.GetComponent<Laser>();
+                    laser.AssignEnemyLaser();
+                    break;
+                case NewEnemyType.EnemyType3:
+                    _fireRate = Random.Range(2.0f, 8.0f);
+                    _canFire = Time.time + _fireRate;
+                    Vector3 missilePosition = transform.position;
+                    missilePosition.y -= 0.5f;
+                    GameObject enemyMissile =
+                        Instantiate(_missilePrefab, missilePosition, _missilePrefab.transform.rotation); // Quaternion.identity);
+                    
+                    break;
+                default:
+                    Debug.LogError("Invlaid FireSwitch");
+                    break;
             }
         }
-        */
     }
 
     public override void CalculateMovement()

@@ -17,6 +17,8 @@
           <e p="CameraShake.cs" t="Include" />
           <e p="Enemy.cs" t="Include" />
           <e p="EnemyBehaviour.cs" t="Include" />
+          <e p="EnemyMissile.cs" t="Include" />
+          <e p="EnemyMovementHoming.cs" t="Include" />
           <e p="EnemyMovementStraight.cs" t="Include" />
           <e p="EnemyMovementWave.cs" t="Include" />
           <e p="EnemyMovementZigzag.cs" t="Include" />

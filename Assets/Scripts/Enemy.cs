@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     protected float _screenBoundRight = 9.0f;
     protected float _screenBoundLeft = -9.0f;
     protected float _screenOutBottom = -6.0f;
+    protected GameObject _playerObject;
     protected Player _player;
     protected Animator _anim;
     
@@ -17,7 +18,7 @@ public class Enemy : MonoBehaviour
     protected float _maxSpeed = 10;
     protected float _maxAccel = 10;
     protected float _orientation;
-    protected float _rotation;
+    [SerializeField] protected float _rotation;
     protected Vector3 _velocity;
     protected Steering _steering;
 
@@ -32,10 +33,15 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
-        _player = GameObject.Find("Player").GetComponent<Player>();
-        if (_player == null)
+        _playerObject = GameObject.Find("Player");
+        
+        if (_playerObject == null)
         {
             Debug.LogError("_player is null");
+        }
+        else
+        {
+            _player = GameObject.Find("Player").GetComponent<Player>();
         }
 
         _anim = GetComponent<Animator>();
@@ -88,6 +94,8 @@ public class Enemy : MonoBehaviour
                 enemyMovementStraight.SetVector(new Vector3(0f, -1f, 0f));
                 break;
         }
+        _fireRate = Random.Range(2.0f, 5.0f);
+        _canFire = Time.time + _fireRate;
     }
 
     // Update is called once per frame
@@ -97,7 +105,7 @@ public class Enemy : MonoBehaviour
 
         if (Time.time > _canFire)
         {
-            _fireRate = Random.Range(2.0f, 8.0f);
+            _fireRate = Random.Range(2.0f, 5.0f);
             _canFire = Time.time + _fireRate;
             GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
@@ -128,7 +136,7 @@ public class Enemy : MonoBehaviour
         }
         
         transform.Translate(displacement);
-        transform.rotation = new Quaternion();
+        // transform.rotation = new Quaternion();
         // transform.Rotate(Vector3.up, _orientation);
         
         if (transform.position.y <= _screenOutBottom)

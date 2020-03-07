@@ -14,7 +14,7 @@ public class SpawnManager : MonoBehaviour
     
     private float _waveDelayMin = 30.0f;
     private float _waveDelayMax = 40.0f;
-    [SerializeField] private int _enemyWaveAmount = 8;
+    [SerializeField] private int _enemyWaveAmount = 6;
     
     [SerializeField] private GameObject _enemyContainer;
     [SerializeField] private GameObject[] _powerups;
@@ -75,7 +75,7 @@ public class SpawnManager : MonoBehaviour
             for (int i = 0; i < enemyWaveCount; i++)
             {
                 x = Random.Range(_leftBound, _rightBound);
-                y = Random.Range(6.0f - 0.5f, 6.0f + 0.5f);
+                y = Random.Range(6.0f, 8.0f);
                 enemyType = Random.Range(0, 4);
                 Vector3 enemyPosition = new Vector3(Random.Range(_leftBound, _rightBound), y, 0);
                 GameObject newEnemy = Instantiate(_enemyPrefab[enemyType], enemyPosition, Quaternion.identity);

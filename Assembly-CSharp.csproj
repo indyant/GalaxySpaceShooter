@@ -62,6 +62,8 @@
      <Compile Include="Assets\Scripts\CameraShake.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\EnemyBehaviour.cs" />
+     <Compile Include="Assets\Scripts\EnemyMissile.cs" />
+     <Compile Include="Assets\Scripts\EnemyMovementHoming.cs" />
      <Compile Include="Assets\Scripts\EnemyMovementStraight.cs" />
      <Compile Include="Assets\Scripts\EnemyMovementWave.cs" />
      <Compile Include="Assets\Scripts\EnemyMovementZigzag.cs" />

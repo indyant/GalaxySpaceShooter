@@ -44,6 +44,7 @@ public class EnemyMovementWave : EnemyBehaviour
      public void SetWave(float height, float duration)
      {
          steering = new Steering();
+
          
          steering.linear.y = -1.0f;
          _radian = 0;

@@ -4,7 +4,7 @@ public class Laser : MonoBehaviour
 {
     private readonly float _boundary = 8.0f;
     [SerializeField] private float _speed = 5.0f;
-    private bool _isEnemyLaser = false;
+    [SerializeField] private bool _isEnemyLaser = false;
     
     [SerializeField] private bool _isDirectionalLaser = false;
     [SerializeField] private Vector3 _direction;
