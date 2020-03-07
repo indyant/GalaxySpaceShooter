@@ -4,34 +4,11 @@ using UnityEngine;
 
 public class NewEnemy : Enemy
 {
-    /*
-    [SerializeField] private float _speed = 4.0f;
-    private float _screenBoundRight = 9.0f;
-    private float _screenBoundLeft = -9.0f;
-    private float _screenOutBottom = -6.0f;
-    private Player _player;
-    private Animator _anim;
-    
-    // Preparation for Phase-II-1 New Enemy Movement
-    private float _maxSpeed = 10;
-    private float _maxAccel = 10;
-    private float _orientation;
-    private float _rotation;
-    private Vector3 _velocity;
-    private Steering _steering;
-
-
-    [SerializeField] private AudioClip _explosionSoundClip;
-    private AudioSource _audioSource;
-
-    [SerializeField] private GameObject _laserPrefab;
-    private float _fireRate = 3.0f;
-    private float _canFire = 0f;
-*/
     [SerializeField] private GameObject _missilePrefab;
+    [SerializeField] private bool _hasShield;
+    [SerializeField] private GameObject _shieldVisualizer;
     
     // Start is called before the first frame update
-
     enum NewEnemyType
     {
         EnemyType1,
@@ -43,33 +20,11 @@ public class NewEnemy : Enemy
     
     public override void Start()
     {
-        _player = GameObject.Find("Player").GetComponent<Player>();
-        if (_player == null)
-        {
-            Debug.LogError("_player is null");
-        }
-
-        _anim = GetComponent<Animator>();
-        if (_anim == null)
-        {
-            Debug.LogError("_anim is null");
-        }
-
-        _audioSource = GetComponent<AudioSource>();
-        if (_audioSource == null)
-        {
-            Debug.LogError("_audioSource is null");
-        }
-        else
-        {
-            _audioSource.clip = _explosionSoundClip;
-        }
+        Initialize();
         
-        // Preparation for Phase-II-1 New Enemy Movement
-        _velocity = Vector3.zero;
-        _steering = new Steering();
         EnemyMovementZigzag enemyMovementZigzag;
         EnemyMovementWave enemyMovementWave;
+        SetShield(false);
 
         switch (_enemyType)
         {
@@ -96,6 +51,7 @@ public class NewEnemy : Enemy
             case NewEnemyType.EnemyType3:
                 enemyMovementWave = gameObject.AddComponent<EnemyMovementWave>();
                 enemyMovementWave.SetWave(1f, 3f);
+                SetShield();
                 break;
             
             default:
@@ -104,6 +60,12 @@ public class NewEnemy : Enemy
         }
         _fireRate = Random.Range(2.0f, 4.0f);
         _canFire = Time.time + _fireRate;
+    }
+
+    private void SetShield(bool hasShield = true)
+    {
+        _hasShield = hasShield;
+        _shieldVisualizer.SetActive(_hasShield);
     }
 
     // Update is called once per frame
@@ -140,71 +102,27 @@ public class NewEnemy : Enemy
         }
     }
 
-    public override void CalculateMovement()
-    {
-        // transform.Translate(Vector3.down * _speed * Time.deltaTime);
-        
-        // Phase-II-1 
-        Vector3 displacement = _velocity * Time.deltaTime;
-        
-        _orientation += _rotation * Time.deltaTime;
-
-        if (_orientation < 0.0f)
-        {
-            _orientation += 360.0f;
-        }
-        else if (_orientation > 360.0f)
-        {
-            _orientation -= 360.0f;
-        }
-        
-        transform.Translate(displacement);
-        transform.rotation = new Quaternion();
-        transform.Rotate(Vector3.forward, _orientation);
-
-        if (transform.position.y <= _screenOutBottom)
-        {
-            float randomX = Random.Range(_screenBoundLeft, _screenBoundRight);
-            transform.position = new Vector3(randomX, 7, 0);
-        }
-    }
-
-    public override void LateUpdate()
-    {
-        _velocity = _steering.linear * _speed;  //* Time.deltaTime;
-        _rotation += _steering.angular; //  * Time.deltaTime;
-
-        if (_velocity.magnitude > _maxSpeed)
-        {
-            _velocity.Normalize();
-            _velocity = _velocity * _maxSpeed;
-        }
-
-        if (_steering.angular == 0.0f)
-        {
-            _rotation = 0.0f;
-        }
-
-        if (_steering.linear.sqrMagnitude == 0.0f)
-        {
-            _velocity = Vector3.zero;
-        }
-
-        _steering = new Steering();
-    }
-    
     public override void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Laser")
         {
-            Destroy(other.gameObject);
-            _player.AddScore(10);
-            _anim.SetTrigger("OnNewEnemyDeath");
-            _speed = 0;
-            _audioSource.Play();
-            Destroy(GetComponent<Collider2D>());
-            _canFire += 10.0f;
-            Destroy(gameObject, 1.0f);
+            SetShield(false);
+            
+            if (_hasShield)
+            {
+                SetShield(false);
+            }
+            else
+            {
+                Destroy(other.gameObject);
+                _player.AddScore(10);
+                _anim.SetTrigger("OnNewEnemyDeath");
+                _speed = 0;
+                _audioSource.Play();
+                Destroy(GetComponent<Collider2D>());
+                _canFire += 10.0f;
+                Destroy(gameObject, 1.0f);
+            }
         }
         else if (other.tag == "Player")
         {
@@ -220,9 +138,4 @@ public class NewEnemy : Enemy
             Destroy(gameObject, 1.0f);
         }
     }
-
-    public override void SetSteering(Steering steering)
-    {
-        _steering = steering;
-    } 
 }

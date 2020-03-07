@@ -62,13 +62,13 @@
      <Compile Include="Assets\Scripts\CameraShake.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\EnemyBehaviour.cs" />
-     <Compile Include="Assets\Scripts\EnemyMissile.cs" />
      <Compile Include="Assets\Scripts\EnemyMovementHoming.cs" />
      <Compile Include="Assets\Scripts\EnemyMovementStraight.cs" />
      <Compile Include="Assets\Scripts\EnemyMovementWave.cs" />
      <Compile Include="Assets\Scripts\EnemyMovementZigzag.cs" />
      <Compile Include="Assets\Scripts\Explosion.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\HomingMissile.cs" />
      <Compile Include="Assets\Scripts\Laser.cs" />
      <Compile Include="Assets\Scripts\Main_Menu\MainMenu.cs" />
      <Compile Include="Assets\Scripts\NewEnemy.cs" />

@@ -30,14 +30,13 @@ public class Enemy : MonoBehaviour
     protected float _fireRate = 3.0f;
     protected float _canFire = 0f;
 
-    // Start is called before the first frame update
-    public virtual void Start()
+    protected void Initialize()
     {
         _playerObject = GameObject.Find("Player");
         
         if (_playerObject == null)
         {
-            Debug.LogError("_player is null");
+            Debug.Log("_player is null");
         }
         else
         {
@@ -63,7 +62,12 @@ public class Enemy : MonoBehaviour
         // Preparation for Phase-II-1 New Enemy Movement
         _velocity = Vector3.zero;
         _steering = new Steering();
+    }
 
+    // Start is called before the first frame update
+    public virtual void Start()
+    {
+        Initialize();
 
         int dirSwitch = Random.Range(0, 3);
         EnemyMovementStraight enemyMovementStraight;
@@ -136,8 +140,8 @@ public class Enemy : MonoBehaviour
         }
         
         transform.Translate(displacement);
-        // transform.rotation = new Quaternion();
-        // transform.Rotate(Vector3.up, _orientation);
+        transform.rotation = new Quaternion();
+        transform.Rotate(Vector3.forward, _orientation);
         
         if (transform.position.y <= _screenOutBottom)
         {
@@ -149,7 +153,7 @@ public class Enemy : MonoBehaviour
     public virtual void LateUpdate()
     {
         _velocity = _steering.linear * _speed; //  * _speed * Time.deltaTime;
-        _rotation += _steering.angular; // * Time.deltaTime;
+        _rotation = _steering.angular; // * Time.deltaTime;
 
         if (_velocity.magnitude > _maxSpeed)
         {

@@ -15,23 +15,26 @@ public class EnemyMovementHoming : EnemyBehaviour
 
     public override Steering GetSteering()
     {
+        Vector3 targetDirection;
+        
         if (_target != null)
         {
-            _steering.linear = _target.position - _me.position;
+            targetDirection = _target.position - _me.position;
         }
         else
         {
-            _steering.linear = Vector3.down;
+            targetDirection = Vector3.down;
         }
 
-        Vector3 cross = Vector3.Cross(_me.up, _steering.linear);
-        _steering.angular = Vector3.Angle(_me.up, _steering.linear);
+        Vector3 cross = Vector3.Cross(_me.up, targetDirection);
+        _steering.angular = Vector3.Angle(_me.up, targetDirection); 
 
         if (cross.z < 0)
         {
             _steering.angular *= -1f;
         }
 
+        _steering.linear = _me.up;
         return _steering;
     }
 
