@@ -50,7 +50,7 @@ public class SpawnManager : MonoBehaviour
         int enemyType = 0;
         while (_stopSpawning == false)
         {
-            enemyType = Random.Range(0, 4);
+            enemyType = Random.Range(0, 5);
             Vector3 enemyPosition = new Vector3(Random.Range(_leftBound, _rightBound), 6, 0);
             GameObject newEnemy = Instantiate(_enemyPrefab[enemyType], enemyPosition, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;

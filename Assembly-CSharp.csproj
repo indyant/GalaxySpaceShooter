@@ -58,10 +58,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\AggressiveEnemy.cs" />
      <Compile Include="Assets\Scripts\Asteroid.cs" />
      <Compile Include="Assets\Scripts\CameraShake.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\EnemyBehaviour.cs" />
+     <Compile Include="Assets\Scripts\EnemyMovementAggressive.cs" />
      <Compile Include="Assets\Scripts\EnemyMovementHoming.cs" />
      <Compile Include="Assets\Scripts\EnemyMovementStraight.cs" />
      <Compile Include="Assets\Scripts\EnemyMovementWave.cs" />

@@ -13,10 +13,12 @@
           </e>
         </e>
         <e p="Scripts" t="Include">
+          <e p="AggressiveEnemy.cs" t="Include" />
           <e p="Asteroid.cs" t="Include" />
           <e p="CameraShake.cs" t="Include" />
           <e p="Enemy.cs" t="Include" />
           <e p="EnemyBehaviour.cs" t="Include" />
+          <e p="EnemyMovementAggressive.cs" t="Include" />
           <e p="EnemyMovementHoming.cs" t="Include" />
           <e p="EnemyMovementStraight.cs" t="Include" />
           <e p="EnemyMovementWave.cs" t="Include" />
@@ -42,5 +44,6 @@
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
     </e>
+    <e p="D:\home\jayyu\gitignore_global.txt" t="IncludeRecursive" />
   </component>
 </project>

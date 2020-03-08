@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class EnemyMovementStraight : EnemyBehaviour
 {
-    private Steering steering;
- 
     public virtual void Awake()
     {
         enemy = gameObject.GetComponent<Enemy>();

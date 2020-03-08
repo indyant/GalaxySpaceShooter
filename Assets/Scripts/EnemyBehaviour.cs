@@ -7,6 +7,7 @@ public class EnemyBehaviour : MonoBehaviour
 {
     public GameObject _target;
     protected Enemy enemy;
+    protected Steering steering;
 
     // Update is called once per frame
     public virtual void Update()

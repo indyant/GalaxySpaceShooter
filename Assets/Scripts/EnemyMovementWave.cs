@@ -6,7 +6,6 @@ using Random = UnityEngine.Random;
 
 public class EnemyMovementWave : EnemyBehaviour
  {
-     private Steering steering;
      private Vector3 _direction;
      private float _duration = 1.0f;
      private float _radian = 0f;
