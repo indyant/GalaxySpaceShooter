@@ -76,6 +76,7 @@
      <Compile Include="Assets\Scripts\NewEnemy.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Powerup.cs" />
+     <Compile Include="Assets\Scripts\SmartEnemy.cs" />
      <Compile Include="Assets\Scripts\SpawnManager.cs" />
      <Compile Include="Assets\Scripts\Steering.cs" />
      <Compile Include="Assets\Scripts\TripleShot.cs" />

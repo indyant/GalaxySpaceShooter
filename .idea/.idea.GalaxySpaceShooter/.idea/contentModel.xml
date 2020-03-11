@@ -33,6 +33,7 @@
           <e p="NewEnemy.cs" t="Include" />
           <e p="Player.cs" t="Include" />
           <e p="Powerup.cs" t="Include" />
+          <e p="SmartEnemy.cs" t="Include" />
           <e p="SpawnManager.cs" t="Include" />
           <e p="Steering.cs" t="Include" />
           <e p="TripleShot.cs" t="Include" />

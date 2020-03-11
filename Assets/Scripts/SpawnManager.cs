@@ -14,7 +14,7 @@ public class SpawnManager : MonoBehaviour
     
     private float _waveDelayMin = 30.0f;
     private float _waveDelayMax = 40.0f;
-    [SerializeField] private int _enemyWaveAmount = 6;
+    [SerializeField] private int _enemyWaveAmount = 4;
     
     [SerializeField] private GameObject _enemyContainer;
     [SerializeField] private GameObject[] _powerups;

@@ -13,7 +13,7 @@ public class NewEnemy : Enemy
     {
         EnemyType1,
         EnemyType2,
-        EnemyType3
+        EnemyType3,
     };
     
     [SerializeField] private NewEnemyType _enemyType;
@@ -81,8 +81,10 @@ public class NewEnemy : Enemy
                 case NewEnemyType.EnemyType2:
                     _fireRate = Random.Range(2.0f, 5.0f);
                     _canFire = Time.time + _fireRate;
+                    Vector3 laserPosition = transform.position;
+                    laserPosition.y -= 0.6f;
                     GameObject enemyLaser =
-                        Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+                        Instantiate(_laserPrefab, laserPosition, _missilePrefab.transform.rotation);
                     Laser laser = enemyLaser.GetComponent<Laser>();
                     laser.AssignEnemyLaser();
                     break;
@@ -116,7 +118,7 @@ public class NewEnemy : Enemy
             {
                 Destroy(other.gameObject);
                 _player.AddScore(10);
-                _anim.SetTrigger("OnNewEnemyDeath");
+                _anim.SetTrigger("OnEnemyDeath");
                 _speed = 0;
                 _audioSource.Play();
                 Destroy(GetComponent<Collider2D>());
@@ -131,7 +133,7 @@ public class NewEnemy : Enemy
             {
                 player.Damage();
             }
-            _anim.SetTrigger("OnNewEnemyDeath");
+            _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
             _canFire += 10.0f;

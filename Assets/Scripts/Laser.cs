@@ -5,12 +5,13 @@ public class Laser : MonoBehaviour
     private readonly float _boundary = 8.0f;
     [SerializeField] private float _speed = 5.0f;
     [SerializeField] private bool _isEnemyLaser = false;
-    
+    private bool _isEnemyLaserBackward = false;
+
     [SerializeField] private bool _isDirectionalLaser = false;
     [SerializeField] private Vector3 _direction;
-    
+
     private Player _player;
-    
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -22,7 +23,14 @@ public class Laser : MonoBehaviour
     {
         if (_isEnemyLaser)
         {
-            MoveDown();
+            if (_isEnemyLaserBackward)
+            {
+                MoveUp();
+            }
+            else
+            {
+                MoveDown();
+            }
         }
         else if (_isDirectionalLaser)
         {
@@ -43,6 +51,7 @@ public class Laser : MonoBehaviour
             {
                 Destroy(transform.parent.gameObject);
             }
+
             Destroy(gameObject);
         }
     }
@@ -56,6 +65,7 @@ public class Laser : MonoBehaviour
             {
                 Destroy(transform.parent.gameObject);
             }
+
             Destroy(gameObject);
         }
     }
@@ -70,13 +80,19 @@ public class Laser : MonoBehaviour
             {
                 Destroy(transform.parent.gameObject);
             }
+
             Destroy(gameObject);
-        } 
+        }
     }
 
     public void AssignEnemyLaser()
     {
         _isEnemyLaser = true;
+    }
+
+    public void SetEnemyLaserBackward(bool backward = true)
+    {
+        _isEnemyLaserBackward = backward;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
