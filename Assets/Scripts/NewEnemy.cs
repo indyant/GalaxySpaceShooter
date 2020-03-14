@@ -84,7 +84,7 @@ public class NewEnemy : Enemy
                     Vector3 laserPosition = transform.position;
                     laserPosition.y -= 0.6f;
                     GameObject enemyLaser =
-                        Instantiate(_laserPrefab, laserPosition, _missilePrefab.transform.rotation);
+                        Instantiate(_laserPrefab, laserPosition, Quaternion.identity);
                     Laser laser = enemyLaser.GetComponent<Laser>();
                     laser.AssignEnemyLaser();
                     break;
