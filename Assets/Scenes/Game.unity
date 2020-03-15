@@ -246,8 +246,6 @@ MonoBehaviour:
   - {fileID: 3473941508049459823, guid: c06d4e61e5860ac46bd8f9e874eb0f78, type: 3}
   - {fileID: 3495598944720040373, guid: f246d82066d8bba46998465e3e613863, type: 3}
   - {fileID: 2558156236034524250, guid: 9e5917def3a32b545bbf16e9ba0b9bfb, type: 3}
-  - {fileID: 298446852395925660, guid: e0d7a5184bb277e42ad1d6c7e6111c99, type: 3}
-  - {fileID: 298446852395925660, guid: e0d7a5184bb277e42ad1d6c7e6111c99, type: 3}
 --- !u!4 &329178262
 Transform:
   m_ObjectHideFlags: 0
@@ -256,7 +254,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 329178260}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.427355, y: 0.22038615, z: 3.4955215}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 389148607}
@@ -1193,7 +1191,7 @@ GameObject:
   - component: {fileID: 794797604}
   m_Layer: 0
   m_Name: PickupContainer
-  m_TagString: Untagged
+  m_TagString: PickupContainer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

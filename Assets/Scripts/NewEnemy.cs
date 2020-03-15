@@ -102,6 +102,18 @@ public class NewEnemy : Enemy
                     break;
             }
         }
+        
+        if (!_isFirePickup && CheckPickupAhead())
+        {
+            _isFirePickup = true;
+            
+            Vector3 laserPosition = transform.position;
+            laserPosition.y -= 0.6f;
+            GameObject enemyLaser = Instantiate(_laserPrefab, laserPosition, Quaternion.identity);
+            Laser laser = enemyLaser.GetComponent<Laser>();
+            laser.AssignEnemyLaser();
+        }
+        
     }
 
     public override void OnTriggerEnter2D(Collider2D other)

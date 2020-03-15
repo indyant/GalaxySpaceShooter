@@ -44,7 +44,7 @@ public class HomingMissile : Enemy
 //        _rb.velocity = transform.up * _speed;
     }
     
-    public override void CalculateMovement()
+    protected override void CalculateMovement()
     {
         if (_isHeatSeek == true)
         {

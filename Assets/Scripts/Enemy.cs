@@ -29,6 +29,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected GameObject _laserPrefab;
     protected float _fireRate = 3.0f;
     protected float _canFire = 0f;
+    protected bool _isFirePickup = false;
+    private GameObject _pickupContainer;
 
     protected void Initialize()
     {
@@ -58,6 +60,8 @@ public class Enemy : MonoBehaviour
         {
             _audioSource.clip = _explosionSoundClip;
         }
+
+        _pickupContainer = GameObject.Find("PickupContainer");
         
         // Preparation for Phase-II-1 New Enemy Movement
         _velocity = Vector3.zero;
@@ -119,9 +123,22 @@ public class Enemy : MonoBehaviour
                 lasers[i].AssignEnemyLaser();
             }
         }
+
+        if (!_isFirePickup && CheckPickupAhead())
+        {
+            _isFirePickup = true;
+            
+            GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+            for (int i = 0; i < lasers.Length; i++)
+            {
+                lasers[i].AssignEnemyLaser();
+            }
+        }
     }
 
-    public virtual void CalculateMovement()
+    protected virtual void CalculateMovement()
     {
         // transform.Translate(Vector3.down * _speed * Time.deltaTime);
         
@@ -148,6 +165,28 @@ public class Enemy : MonoBehaviour
             float randomX = Random.Range(_screenBoundLeft, _screenBoundRight);
             transform.position = new Vector3(randomX, 7, 0);
         }
+    }
+
+    protected bool CheckPickupAhead()
+    {
+        bool isPickupAhead = false;
+        Debug.Log("Check Pickup Ahead");
+
+        foreach (Transform childTransform in _pickupContainer.transform)
+        {
+            if (childTransform.position.y <= transform.position.y)
+            {
+                if ((childTransform.position.x >= transform.position.x - 0.25) &&
+                    (childTransform.position.x <= transform.position.x + 0.25))
+                {
+                    isPickupAhead = true;
+                    Debug.Log("Pickup Ahead = true");
+                    break;
+                }
+            }
+        }
+
+        return isPickupAhead;
     }
 
     public virtual void LateUpdate()

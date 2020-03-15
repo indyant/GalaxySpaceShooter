@@ -20,7 +20,7 @@ public class AggressiveEnemy : Enemy
         _speed = 2.0f;
     }
 
-    public override void CalculateMovement()
+    protected override void CalculateMovement()
     {
         Vector3 displacement = _velocity * Time.deltaTime;
         

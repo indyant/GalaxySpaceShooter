@@ -100,7 +100,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnPowerupRoutine(Powerup.PowerUpType type, float minInterval)
     {
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(_powerupIntervals[type]);
         int powerupIndex = 0;
 
         while (_stopSpawning == false)

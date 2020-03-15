@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Spawn_Manager
   - Enemy_Laser
+  - PickupContainer
   layers:
   - Default
   - TransparentFX

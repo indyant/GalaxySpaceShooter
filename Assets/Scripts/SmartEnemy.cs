@@ -54,7 +54,7 @@ public class SmartEnemy : Enemy
     }
     
     
-    public override void CalculateMovement()
+    protected override void CalculateMovement()
     {
         Vector3 displacement = _velocity * Time.deltaTime;
         
