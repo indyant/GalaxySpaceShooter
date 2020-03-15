@@ -62,6 +62,10 @@ public class Enemy : MonoBehaviour
         }
 
         _pickupContainer = GameObject.Find("PickupContainer");
+        if (_pickupContainer == null)
+        {
+            Debug.LogError("_pickupContainer is null");
+        }
         
         // Preparation for Phase-II-1 New Enemy Movement
         _velocity = Vector3.zero;
@@ -170,7 +174,6 @@ public class Enemy : MonoBehaviour
     protected bool CheckPickupAhead()
     {
         bool isPickupAhead = false;
-        Debug.Log("Check Pickup Ahead");
 
         foreach (Transform childTransform in _pickupContainer.transform)
         {
@@ -180,7 +183,6 @@ public class Enemy : MonoBehaviour
                     (childTransform.position.x <= transform.position.x + 0.25))
                 {
                     isPickupAhead = true;
-                    Debug.Log("Pickup Ahead = true");
                     break;
                 }
             }

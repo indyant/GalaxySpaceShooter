@@ -53,13 +53,12 @@ public class Player : MonoBehaviour
 
     [SerializeField] private GameObject _mainCamera;
     private CameraShake _camera;
-    
+    private GameObject _pickupContainer;
     
     // Start is called before the first frame update
     private void Start()
     {
         transform.position = new Vector3(0, 0, 0);
-        // _shieldVisualizer.SetActive(false);
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         if (_spawnManager == null)
         {
@@ -98,6 +97,12 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("_camera is null");
         }
+        
+        _pickupContainer = GameObject.Find("PickupContainer");
+        if (_pickupContainer == null)
+        {
+            Debug.LogError("_pickupContainer is null");
+        }
     }
 
     // Update is called once per frame
@@ -108,6 +113,11 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
         {
             FireLaser();
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            PullPickups();
         }
 
         // Phase I: Framework - Quiz - Thrusters 
@@ -370,5 +380,15 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5.0f);
         _fireRate = DefaultFireRate;
+    }
+
+    private void PullPickups()
+    {
+        Powerup[] powerups = _pickupContainer.GetComponentsInChildren<Powerup>();
+            
+        foreach (Powerup powerup in powerups)
+        {
+            powerup.MoveTowards(transform);
+        }
     }
 }
