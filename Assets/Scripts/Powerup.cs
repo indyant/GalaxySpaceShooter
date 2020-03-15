@@ -13,9 +13,9 @@ public class Powerup : MonoBehaviour
     // Phase I: Framework - Quiz - Secondary Fire Powerup
     // _powerupID - 0: Triple_Shot, 1: Speed_Up, 2: Shield_Up, 3: Ammo, 4: Health, 5: New
     
-    enum PowerUp {Empty, TripleShot, SpeedUp, ShieldUp, Ammo, Health, NewPowerUp, FireSpeedDebuff, MovementDebuff}
+    public enum PowerUpType {Empty, TripleShot, SpeedUp, ShieldUp, Ammo, Health, MultiShotPowerUp, FireSpeedDebuff, MovementDebuff}
     
-    [FormerlySerializedAs("_powerupID")] [SerializeField] private PowerUp _powerUp = PowerUp.Empty;
+    [SerializeField] private PowerUpType powerUpType = PowerUpType.Empty;
     [SerializeField] private AudioClip _audioClip;
 
     // Start is called before the first frame update
@@ -46,30 +46,30 @@ public class Powerup : MonoBehaviour
             AudioSource.PlayClipAtPoint(_audioClip, transform.position);
             if (player != null)
             {
-                switch (_powerUp)
+                switch (powerUpType)
                 {
-                    case PowerUp.TripleShot:
+                    case PowerUpType.TripleShot:
                         player.EnableTripleShot();
                         break;
-                    case PowerUp.SpeedUp:
+                    case PowerUpType.SpeedUp:
                         player.EnableSpeedup();
                         break;
-                    case PowerUp.ShieldUp:
+                    case PowerUpType.ShieldUp:
                         player.EnableShield();
                         break;
-                    case PowerUp.Ammo:
+                    case PowerUpType.Ammo:
                         player.AddAmmo();
                         break;
-                    case PowerUp.Health:
+                    case PowerUpType.Health:
                         player.RecoverHealth();
                         break;
-                    case PowerUp.NewPowerUp:
+                    case PowerUpType.MultiShotPowerUp:
                         player.EnableMultiShot();
                         break;
-                    case PowerUp.MovementDebuff:
+                    case PowerUpType.MovementDebuff:
                         player.EnableMovementDebuff();
                         break;
-                    case PowerUp.FireSpeedDebuff:
+                    case PowerUpType.FireSpeedDebuff:
                         player.EnableFireSpeedDebuff();
                         break;
                     default:
