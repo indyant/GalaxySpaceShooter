@@ -31,6 +31,14 @@ public class Enemy : MonoBehaviour
     protected float _canFire = 0f;
     protected bool _isFirePickup = false;
     private GameObject _pickupContainer;
+    private GameObject _playerLaserContainer;
+
+    private Vector3 _currentVector;
+    private Vector3 _vectorDown;
+    private Vector3 _vectorDownRight;
+    private Vector3 _vectorDownLeft;
+    private EnemyMovementStraight _enemyMovementStraight;
+    private bool _isLaserAvoid = false;
 
     protected void Initialize()
     {
@@ -66,10 +74,20 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("_pickupContainer is null");
         }
+
+        _playerLaserContainer = GameObject.Find("PlayerLaserContainer");
+        if (_playerLaserContainer == null)
+        {
+            Debug.LogError("_playerLaserContainer is null");
+        }
         
         // Preparation for Phase-II-1 New Enemy Movement
         _velocity = Vector3.zero;
         _steering = new Steering();
+        
+        _vectorDown = Vector3.down;
+        _vectorDownRight = new Vector3(1f, -1f, 0f);
+        _vectorDownLeft = new Vector3(-1f, -1f, 0f);
     }
 
     // Start is called before the first frame update
@@ -77,35 +95,31 @@ public class Enemy : MonoBehaviour
     {
         Initialize();
 
-        int dirSwitch = Random.Range(0, 3);
-        EnemyMovementStraight enemyMovementStraight;
-       //  EnemyMovementZigzag enemyMovementZigzag;
+        int dirSwitch = Random.Range(0, 2);
+        _enemyMovementStraight  = gameObject.AddComponent<EnemyMovementStraight>();
             
         switch (dirSwitch)
         {
             case 0: // straight down
-                enemyMovementStraight  = gameObject.AddComponent<EnemyMovementStraight>();
-                enemyMovementStraight.SetVector(new Vector3(0f, -1f, 0f));
+                _currentVector = _vectorDown;
                 break;
-            case 1: // right
-                enemyMovementStraight = gameObject.AddComponent<EnemyMovementStraight>();
-                enemyMovementStraight.SetVector(new Vector3(1f, -1f, 0f));
+            case 1: // slant
+                if (transform.position.x >= 0)
+                {
+                    _currentVector = _vectorDownLeft;
+                }
+                else
+                {
+                    _currentVector = _vectorDownRight;
+                }
+
                 break;
-            case 2:  // left
-                enemyMovementStraight = gameObject.AddComponent<EnemyMovementStraight>();
-                enemyMovementStraight.SetVector(new Vector3(-1f, -1f, 0f));
-                break;
-            /*
-            case 3: // zigzag
-                enemyMovementZigzag = gameObject.AddComponent<EnemyMovementZigzag>();
-                enemyMovementZigzag.SetZigzag(new Vector3(-1, -1, 0), 1.5f);
-                break;
-                */
             default:
-                enemyMovementStraight = gameObject.AddComponent<EnemyMovementStraight>();
-                enemyMovementStraight.SetVector(new Vector3(0f, -1f, 0f));
+                _currentVector = _vectorDownLeft;
                 break;
         }
+        
+        _enemyMovementStraight.SetVector(_currentVector);
         _fireRate = Random.Range(2.0f, 5.0f);
         _canFire = Time.time + _fireRate;
     }
@@ -168,6 +182,36 @@ public class Enemy : MonoBehaviour
         {
             float randomX = Random.Range(_screenBoundLeft, _screenBoundRight);
             transform.position = new Vector3(randomX, 7, 0);
+        }
+
+        if (!_isLaserAvoid && CheckAllLasersInRange())
+        {
+            if (_currentVector == _vectorDown)
+            {
+                if (transform.position.x >= 0)
+                {
+                    _enemyMovementStraight.SetVector(_vectorDownLeft);
+                    _currentVector = _vectorDownLeft;
+                }
+                else
+                {
+                    _enemyMovementStraight.SetVector(_vectorDownRight);
+                    _currentVector = _vectorDownLeft;
+                }
+            }
+            else if (_currentVector == _vectorDownLeft)
+            {
+                _enemyMovementStraight.SetVector(_vectorDownRight);
+                _currentVector = _vectorDownRight;
+            }
+            else if (_currentVector == _vectorDownRight)
+            {
+                _enemyMovementStraight.SetVector(_vectorDownLeft);
+                _currentVector = _vectorDownLeft;
+            }
+
+            _isLaserAvoid = true;
+            StartCoroutine(ResetLaserAvoidRoutine());
         }
     }
 
@@ -247,5 +291,62 @@ public class Enemy : MonoBehaviour
     {
         // Debug.Log("Steering.linear = " + steering.linear);
         _steering = steering;
+    }
+
+    private bool CheckAllLasersInRange()
+    {
+        bool isLaserInRange = false;
+
+        foreach (Transform childTransform in _playerLaserContainer.transform)
+        {
+            if (childTransform.childCount > 0)
+            {
+                foreach (Transform childLaserTransform in childTransform)
+                {
+                    if (CheckLaserInRange(childLaserTransform))
+                    {
+                        isLaserInRange = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                if (CheckLaserInRange(childTransform))
+                {
+                    isLaserInRange = true;
+                }
+            }
+            
+            if (isLaserInRange)
+            {
+                break;
+            }
+        }
+        
+        return isLaserInRange;
+    }
+
+    private bool CheckLaserInRange(Transform laserTransform)
+    {
+        bool isInRange = false;
+        
+        if ((laserTransform.position.x >= transform.position.x - 0.25f) &&
+            (laserTransform.position.x <= transform.position.x + 0.25f))
+        {
+            if (laserTransform.position.y - transform.position.y <= 1.0f)
+            {
+                isInRange = true;
+            }
+        }
+
+        return isInRange;
+    }
+
+    IEnumerator ResetLaserAvoidRoutine()
+    {
+        yield return new WaitForSeconds(3.0f);
+
+        _isLaserAvoid = false;
     }
 }

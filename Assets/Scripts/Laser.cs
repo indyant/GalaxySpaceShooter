@@ -49,7 +49,10 @@ public class Laser : MonoBehaviour
         {
             if (transform.parent != null)
             {
-                Destroy(transform.parent.gameObject);
+                if (transform.parent.tag != "PlayerLaserContainer")
+                {
+                    Destroy(transform.parent.gameObject);
+                }
             }
 
             Destroy(gameObject);
@@ -63,7 +66,10 @@ public class Laser : MonoBehaviour
         {
             if (transform.parent != null)
             {
-                Destroy(transform.parent.gameObject);
+                if (transform.parent.tag != "PlayerLaserContainer")
+                {
+                    Destroy(transform.parent.gameObject);
+                }
             }
 
             Destroy(gameObject);

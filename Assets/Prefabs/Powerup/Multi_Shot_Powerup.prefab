@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7451463924004785782}
   - component: {fileID: -7200497459161182050}
   m_Layer: 0
-  m_Name: New_Powerup
+  m_Name: Multi_Shot_Powerup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
-  _powerUp: 6
+  powerUpType: 6
   _audioClip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
 --- !u!50 &-3957034536102163464
 Rigidbody2D:

@@ -54,6 +54,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _mainCamera;
     private CameraShake _camera;
     private GameObject _pickupContainer;
+    private GameObject _laserContainer;
     
     // Start is called before the first frame update
     private void Start()
@@ -102,6 +103,12 @@ public class Player : MonoBehaviour
         if (_pickupContainer == null)
         {
             Debug.LogError("_pickupContainer is null");
+        }
+
+        _laserContainer = GameObject.Find("PlayerLaserContainer");
+        if (_laserContainer == null)
+        {
+            Debug.LogError("_laserContainer == null");
         }
     }
 
@@ -188,26 +195,32 @@ public class Player : MonoBehaviour
 
         if (isAmmoAvailable)
         {
+            GameObject laserFired;
             if (_isTripleShotActive)
             {
                 var laserPos = new Vector3(transform.position.x - 0.15f, transform.position.y - 0.65f,
                     transform.position.z);
-                Instantiate(_tripleShotPrefab, laserPos, Quaternion.identity);
+                laserFired = Instantiate(_tripleShotPrefab, laserPos, Quaternion.identity);
                 _ammoCount -= 3;
             }
             else if (_isMultiShotActive)
             {
                 var laserPos = new Vector3(transform.position.x - 0.15f, transform.position.y - 0.65f,
                     transform.position.z);
-                Instantiate(_multiDirectionalShotPrefab, laserPos, Quaternion.identity);
+                laserFired = Instantiate(_multiDirectionalShotPrefab, laserPos, Quaternion.identity);
                 _ammoCount -= 3;
             }
             else
             {
                 var laserPos = new Vector3(transform.position.x, transform.position.y + _laserSpawnOffset,
                     transform.position.z);
-                Instantiate(_laserPrefab, laserPos, Quaternion.identity);
+                laserFired = Instantiate(_laserPrefab, laserPos, Quaternion.identity);
                 _ammoCount--;
+            }
+
+            if (laserFired != null)
+            {
+                laserFired.transform.parent = _laserContainer.transform;
             }
             _audioSource.Play();
         }

@@ -9,6 +9,7 @@ TagManager:
   - Spawn_Manager
   - Enemy_Laser
   - PickupContainer
+  - PlayerLaserContainer
   layers:
   - Default
   - TransparentFX
