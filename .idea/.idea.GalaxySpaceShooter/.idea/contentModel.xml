@@ -17,6 +17,7 @@
           <e p="Asteroid.cs" t="Include" />
           <e p="CameraShake.cs" t="Include" />
           <e p="Enemy.cs" t="Include" />
+          <e p="EnemyBoss.cs" t="Include" />
           <e p="EnemyHomingMissile.cs" t="Include" />
           <e p="Explosion.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />

@@ -72,10 +72,6 @@ public class EnemyHomingMissile : Enemy
 
         if (CheckOutOfScreen())
         {
-            if (transform.parent != null)
-            {
-                Destroy(transform.parent.gameObject);
-            }
             Destroy(gameObject);
         }
     }

@@ -9,13 +9,18 @@ public class Laser : MonoBehaviour
 
     [SerializeField] private bool _isDirectionalLaser = false;
     [SerializeField] private Vector3 _direction;
-
+    private Vector3 _moveDirection;
+    
     private Player _player;
 
     // Start is called before the first frame update
     private void Start()
     {
 //        transform.position = new Vector3();
+        if (_isDirectionalLaser)
+        {
+            SetDirection(_direction);
+        }
     }
 
     // Update is called once per frame
@@ -23,7 +28,11 @@ public class Laser : MonoBehaviour
     {
         if (_isEnemyLaser)
         {
-            if (_isEnemyLaserBackward)
+            if (_isDirectionalLaser)
+            {
+                MoveDirection();
+            }
+            else if (_isEnemyLaserBackward)
             {
                 MoveUp();
             }
@@ -34,7 +43,7 @@ public class Laser : MonoBehaviour
         }
         else if (_isDirectionalLaser)
         {
-            MoveDirection(_direction);
+            MoveDirection();
         }
         else
         {
@@ -77,10 +86,11 @@ public class Laser : MonoBehaviour
     }
 
     // Phase I: Framework - Quiz - Secondary Fire Powerup
-    private void MoveDirection(Vector3 direction)
+    private void MoveDirection()
     {
-        transform.Translate(direction * _speed * Time.deltaTime);
-        if (transform.position.y >= _boundary)
+        // transform.Translate(direction * _speed * Time.deltaTime);
+        transform.Translate(_moveDirection * _speed * Time.deltaTime);
+        if ((transform.position.y >= _boundary) || (transform.position.y <= (_boundary * -1.0f)))
         {
             if (transform.parent != null)
             {
@@ -112,5 +122,15 @@ public class Laser : MonoBehaviour
             }
             Destroy(gameObject, 2.8f);
         }
-    }  
+    }
+
+    public void SetDirection(Vector3 direction)
+    {
+        _isDirectionalLaser = true;
+        _moveDirection = Vector3.up;
+
+        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+//        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        transform.Rotate(Vector3.forward, angle);
+    }
 }

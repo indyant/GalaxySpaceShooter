@@ -9,6 +9,7 @@ public class SpawnManager : MonoBehaviour
 {
     // [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject[] _enemyPrefab;
+    [SerializeField] private GameObject _enemyBossPrefab;
     private float _spawnDelayMin = 3.0f;
     private float _spawnDelayMax = 5.0f; 
     
@@ -19,6 +20,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject _enemyContainer;
     [SerializeField] private GameObject _pickupContainer;
     [SerializeField] private GameObject[] _powerups;
+    
     private Dictionary<Powerup.PowerUpType, int> _powerupIntervals = new Dictionary<Powerup.PowerUpType, int>()
     {
         {Powerup.PowerUpType.TripleShot, 8},
@@ -32,7 +34,7 @@ public class SpawnManager : MonoBehaviour
         {Powerup.PowerUpType.MovementDebuff, 5}
     };
 
-    private bool _stopSpawning = false;
+    [SerializeField] private bool _stopSpawning = false;
     private float _leftBound = -9.0f;
     private float _rightBound = 9.0f;
     private float _waveLevel = 1;
@@ -84,18 +86,31 @@ public class SpawnManager : MonoBehaviour
         
         while (_stopSpawning == false)
         {
-            enemyWaveCount = (int) (_enemyWaveAmount * _waveLevel * 1.2);
-            _waveLevel++;
-            for (int i = 0; i < enemyWaveCount; i++)
+            if (_waveLevel % 3 != 0)
             {
-                x = Random.Range(_leftBound, _rightBound);
-                y = Random.Range(6.0f, 8.0f);
-                enemyType = Random.Range(0, 4);
-                Vector3 enemyPosition = new Vector3(Random.Range(_leftBound, _rightBound), y, 0);
-                GameObject newEnemy = Instantiate(_enemyPrefab[enemyType], enemyPosition, Quaternion.identity);
-                newEnemy.transform.parent = _enemyContainer.transform;
+                enemyWaveCount = (int) (_enemyWaveAmount * _waveLevel * 1.2);
+                _waveLevel++;
+                for (int i = 0; i < enemyWaveCount; i++)
+                {
+                    x = Random.Range(_leftBound, _rightBound);
+                    y = Random.Range(6.0f, 8.0f);
+                    enemyType = Random.Range(0, 4);
+                    Vector3 enemyPosition = new Vector3(Random.Range(_leftBound, _rightBound), y, 0);
+                    GameObject newEnemy = Instantiate(_enemyPrefab[enemyType], enemyPosition,
+                        Quaternion.identity);
+                    newEnemy.transform.parent = _enemyContainer.transform;
+                }
+
+                yield return new WaitForSeconds(Random.Range(_waveDelayMin, _waveDelayMax));
             }
-            yield return new WaitForSeconds(Random.Range(_waveDelayMin, _waveDelayMax));
+            else
+            {
+                _stopSpawning = true;
+                _waveLevel++;
+                Vector3 enemyPosition = new Vector3(0f, 9f, 0);
+                GameObject enemyBoss = Instantiate(_enemyBossPrefab, enemyPosition, Quaternion.identity);
+                enemyBoss.transform.parent = _enemyContainer.transform;
+            }
         }
     }
 
@@ -161,5 +176,11 @@ public class SpawnManager : MonoBehaviour
     public void OnPlayerDeath()
     {
         _stopSpawning = true;
+    }
+
+    public void OnEnemyBossDeath()
+    {
+        _stopSpawning = false;
+        StartSpawning();
     }
 }
