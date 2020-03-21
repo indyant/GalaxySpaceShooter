@@ -5,15 +5,15 @@ using UnityEngine;
 public class SmartEnemy : Enemy
 {
     // Start is called before the first frame update
-    private EnemyMovementStraight _enemyMovementStraight;
+    private ObjectMovementStraight _objectMovementStraight;
     [SerializeField] private Transform _playerTransform;
     
     public override void Start()
     {
         Initialize();
         
-        _enemyMovementStraight = gameObject.AddComponent<EnemyMovementStraight>();
-        _enemyMovementStraight.SetVector(Vector3.down);
+        _objectMovementStraight = gameObject.AddComponent<ObjectMovementStraight>();
+        _objectMovementStraight.SetVector(Vector3.down);
 
         _fireRate = Random.Range(1.0f, 2.0f);
         _canFire = Time.time + _fireRate;

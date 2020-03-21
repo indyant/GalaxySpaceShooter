@@ -5,7 +5,7 @@ using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
-public class HomingMissile : Enemy
+public class EnemyHomingMissile : Enemy
 {
     private bool _isHeatSeek = false;
     
@@ -14,15 +14,15 @@ public class HomingMissile : Enemy
     {
         Initialize();
         
-        EnemyMovementHoming enemyMovementHoming;
-        enemyMovementHoming = gameObject.AddComponent<EnemyMovementHoming>();
+        ObjectMovementHoming objectMovementHoming;
+        objectMovementHoming = gameObject.AddComponent<ObjectMovementHoming>();
         Transform playerTransform = null;
         if (_player != null)
         {
             playerTransform = _player.transform;
         }
         
-        enemyMovementHoming.SetPlayer(playerTransform, transform);
+        objectMovementHoming.SetTarget(playerTransform, transform, true);
         StartCoroutine(LaunchMissileRoutine());
     }
 
@@ -103,7 +103,7 @@ public class HomingMissile : Enemy
             _anim.SetTrigger("OnMissileHit");
             _speed = 0;
             _audioSource.Play();
-            Destroy(GetComponent<EnemyMovementHoming>());
+            Destroy(GetComponent<ObjectMovementHoming>());
             Destroy(GetComponent<Collider2D>());
             Destroy(gameObject, 0.8f);
         }
@@ -117,7 +117,7 @@ public class HomingMissile : Enemy
             _anim.SetTrigger("OnMissileHit");
             _speed = 0;
             _audioSource.Play();
-            Destroy(GetComponent<EnemyMovementHoming>());
+            Destroy(GetComponent<ObjectMovementHoming>());
             Destroy(GetComponent<Collider2D>());
             Destroy(gameObject, 0.8f);
         }

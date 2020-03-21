@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBehaviour : MonoBehaviour
+public class ObjectBehaviour : MonoBehaviour
 {
     public GameObject _target;
-    protected Enemy enemy;
+    protected ISteeringObject enemy;
     protected Steering steering;
 
     // Update is called once per frame

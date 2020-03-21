@@ -27,6 +27,7 @@ public class SpawnManager : MonoBehaviour
         {Powerup.PowerUpType.Ammo, 3},
         {Powerup.PowerUpType.Health, 15},
         {Powerup.PowerUpType.MultiShotPowerUp, 10},
+        {Powerup.PowerUpType.HomingLaserPowerup, 15},
         {Powerup.PowerUpType.FireSpeedDebuff, 5},
         {Powerup.PowerUpType.MovementDebuff, 5}
     };
@@ -140,11 +141,14 @@ public class SpawnManager : MonoBehaviour
             case Powerup.PowerUpType.MultiShotPowerUp:
                 powerupIndex = 5;
                 break;
-            case Powerup.PowerUpType.FireSpeedDebuff:
+            case Powerup.PowerUpType.HomingLaserPowerup:
                 powerupIndex = 6;
                 break;
-            case Powerup.PowerUpType.MovementDebuff:
+            case Powerup.PowerUpType.FireSpeedDebuff:
                 powerupIndex = 7;
+                break;
+            case Powerup.PowerUpType.MovementDebuff:
+                powerupIndex = 8;
                 break;
             default:
                 Debug.LogError("Invalid PowerUpType (" + type + ")");

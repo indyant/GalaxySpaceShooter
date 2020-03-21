@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private GameObject _tripleShotPrefab;
     [SerializeField] private GameObject _multiDirectionalShotPrefab;
+    [SerializeField] private GameObject _homeingLaserPrefab;
     private readonly float _laserSpawnOffset = 0.85f;
     private float _nextFire = -1f;
 
@@ -50,6 +51,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int _ammoCount = InitialAmmo;
     private const int AdditionalAmmo = 20;
     private const int _maxAmmo = 100;
+    private bool _isHomingLaser = false;
 
     [SerializeField] private GameObject _mainCamera;
     private CameraShake _camera;
@@ -210,6 +212,14 @@ public class Player : MonoBehaviour
                 laserFired = Instantiate(_multiDirectionalShotPrefab, laserPos, Quaternion.identity);
                 _ammoCount -= 3;
             }
+            else if (_isHomingLaser)
+            {
+                var laserPos = new Vector3(transform.position.x, transform.position.y + _laserSpawnOffset,
+                    transform.position.z);
+                
+                laserFired = Instantiate(_homeingLaserPrefab, laserPos, Quaternion.identity);
+                _ammoCount -= 1;
+            }
             else
             {
                 var laserPos = new Vector3(transform.position.x, transform.position.y + _laserSpawnOffset,
@@ -299,7 +309,7 @@ public class Player : MonoBehaviour
     public void EnableTripleShot(bool isTripleShot = true)
     {
         _isTripleShotActive = isTripleShot;
-        StartCoroutine(TripleShotPowerDownRoutine());
+        StartCoroutine(ShotPowerDownRoutine());
     }
 
     // Phase I: Framework - Quiz - Secondary Fire Powerup
@@ -309,21 +319,16 @@ public class Player : MonoBehaviour
         {
             _isTripleShotActive = false;
             _isMultiShotActive = true;
-            StartCoroutine(MultiShotPowerDownRoutine());
+            StartCoroutine(ShotPowerDownRoutine());
         }
     }
 
-    IEnumerator TripleShotPowerDownRoutine()
+    IEnumerator ShotPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
         _isTripleShotActive = false;
-    }
-    
-    // Phase I: Framework - Quiz - Secondary Fire Powerup
-    IEnumerator MultiShotPowerDownRoutine()
-    {
-        yield return new WaitForSeconds(5.0f);
         _isMultiShotActive = false;
+        _isHomingLaser = false;
     }
 
     public void EnableSpeedup()
@@ -375,6 +380,12 @@ public class Player : MonoBehaviour
             _uiManager.SetLives(_lives);
             DisplayDamage();
         }
+    }
+
+    public void EnableHomingLaser()
+    {
+        _isHomingLaser = true;
+        StartCoroutine(ShotPowerDownRoutine());
     }
 
     public void EnableMovementDebuff()

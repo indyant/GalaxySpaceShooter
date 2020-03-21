@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Transactions;
 using UnityEngine;
 
-public class EnemyMovementStraight : EnemyBehaviour
+public class ObjectMovementStraight : ObjectBehaviour
 {
     public virtual void Awake()
     {

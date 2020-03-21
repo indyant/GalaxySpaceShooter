@@ -5,15 +5,15 @@ using UnityEngine;
 public class AggressiveEnemy : Enemy
 {
     // Start is called before the first frame update
-    private EnemyMovementAggressive _enemyMovementAggressive;
+    private ObjectMovementAggressive _objectMovementAggressive;
     
     
     public override void Start()
     {
         Initialize();
         
-        _enemyMovementAggressive = gameObject.AddComponent<EnemyMovementAggressive>();
-        _enemyMovementAggressive.SetPlayer(_player.transform, transform);
+        _objectMovementAggressive = gameObject.AddComponent<ObjectMovementAggressive>();
+        _objectMovementAggressive.SetPlayer(_player.transform, transform);
 
         _fireRate = Random.Range(2.0f, 5.0f);
         _canFire = Time.time + _fireRate;
@@ -43,7 +43,7 @@ public class AggressiveEnemy : Enemy
         {
             float randomX = Random.Range(_screenBoundLeft, _screenBoundRight);
             transform.position = new Vector3(randomX, 7, 0);
-            _enemyMovementAggressive.ResetRam();
+            _objectMovementAggressive.ResetRam();
         }
     }
     

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class EnemyMovementZigzag : EnemyBehaviour
+public class ObjectMovementZigzag : ObjectBehaviour
  {
      private Vector3 _direction;
      private float _duration = 1.0f;

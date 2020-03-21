@@ -13,7 +13,7 @@ public class Powerup : MonoBehaviour
     // Phase I: Framework - Quiz - Secondary Fire Powerup
     // _powerupID - 0: Triple_Shot, 1: Speed_Up, 2: Shield_Up, 3: Ammo, 4: Health, 5: New
     
-    public enum PowerUpType {Empty, TripleShot, SpeedUp, ShieldUp, Ammo, Health, MultiShotPowerUp, FireSpeedDebuff, MovementDebuff}
+    public enum PowerUpType {Empty, TripleShot, SpeedUp, ShieldUp, Ammo, Health, MultiShotPowerUp, HomingLaserPowerup, FireSpeedDebuff, MovementDebuff}
     
     [SerializeField] private PowerUpType powerUpType = PowerUpType.Empty;
     [SerializeField] private AudioClip _audioClip;
@@ -75,6 +75,9 @@ public class Powerup : MonoBehaviour
                         break;
                     case PowerUpType.MultiShotPowerUp:
                         player.EnableMultiShot();
+                        break;
+                    case PowerUpType.HomingLaserPowerup:
+                        player.EnableHomingLaser();
                         break;
                     case PowerUpType.MovementDebuff:
                         player.EnableMovementDebuff();

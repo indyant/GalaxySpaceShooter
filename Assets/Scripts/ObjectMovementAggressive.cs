@@ -4,7 +4,7 @@ using System.Numerics;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
-public class EnemyMovementAggressive : EnemyBehaviour
+public class ObjectMovementAggressive : ObjectBehaviour
 {
     private Transform _target;
     private Transform _me;

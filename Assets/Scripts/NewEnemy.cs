@@ -7,6 +7,7 @@ public class NewEnemy : Enemy
     [SerializeField] private GameObject _missilePrefab;
     [SerializeField] private bool _hasShield;
     [SerializeField] private GameObject _shieldVisualizer;
+    private GameObject _enemyContainer;
     
     // Start is called before the first frame update
     enum NewEnemyType
@@ -22,14 +23,20 @@ public class NewEnemy : Enemy
     {
         Initialize();
         
-        EnemyMovementZigzag enemyMovementZigzag;
-        EnemyMovementWave enemyMovementWave;
+        _enemyContainer = GameObject.Find("EnemyContainer");
+        if (_enemyContainer == null)
+        {
+            Debug.LogError("_enemyContainer is null");
+        }
+        
+        ObjectMovementZigzag objectMovementZigzag;
+        ObjectMovementWave objectMovementWave;
         SetShield(false);
 
         switch (_enemyType)
         {
             case NewEnemyType.EnemyType1: // zigzag
-                enemyMovementZigzag = gameObject.AddComponent<EnemyMovementZigzag>();
+                objectMovementZigzag = gameObject.AddComponent<ObjectMovementZigzag>();
                 float randomDirection = Random.value;
                 Vector3 direction;
                 if (randomDirection > 0.5f)
@@ -40,17 +47,17 @@ public class NewEnemy : Enemy
                 {
                     direction = new Vector3(1, -1, 0);
                 }
-                enemyMovementZigzag.SetZigzag(direction, 1.3f);
+                objectMovementZigzag.SetZigzag(direction, 1.3f);
                 break;
             
             case NewEnemyType.EnemyType2:
-                enemyMovementWave = gameObject.AddComponent<EnemyMovementWave>();
-                enemyMovementWave.SetWave(1f, 1.5f);
+                objectMovementWave = gameObject.AddComponent<ObjectMovementWave>();
+                objectMovementWave.SetWave(1f, 1.5f);
                 break;
             
             case NewEnemyType.EnemyType3:
-                enemyMovementWave = gameObject.AddComponent<EnemyMovementWave>();
-                enemyMovementWave.SetWave(1f, 3f);
+                objectMovementWave = gameObject.AddComponent<ObjectMovementWave>();
+                objectMovementWave.SetWave(1f, 3f);
                 SetShield();
                 break;
             
@@ -95,7 +102,7 @@ public class NewEnemy : Enemy
                     missilePosition.y -= 0.5f;
                     GameObject enemyMissile =
                         Instantiate(_missilePrefab, missilePosition, _missilePrefab.transform.rotation); // Quaternion.identity);
-                    
+                    enemyMissile.transform.parent = _enemyContainer.transform;
                     break;
                 default:
                     Debug.LogError("Invlaid FireSwitch");
@@ -120,8 +127,6 @@ public class NewEnemy : Enemy
     {
         if (other.tag == "Laser")
         {
-            SetShield(false);
-            
             if (_hasShield)
             {
                 SetShield(false);

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, ISteeringObject
 {
     [SerializeField] protected float _speed = 4.0f;
     protected float _screenBoundRight = 9.0f;
@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour
     private Vector3 _vectorDown;
     private Vector3 _vectorDownRight;
     private Vector3 _vectorDownLeft;
-    private EnemyMovementStraight _enemyMovementStraight;
+    private ObjectMovementStraight _objectMovementStraight;
     private bool _isLaserAvoid = false;
 
     protected void Initialize()
@@ -96,7 +96,7 @@ public class Enemy : MonoBehaviour
         Initialize();
 
         int dirSwitch = Random.Range(0, 2);
-        _enemyMovementStraight  = gameObject.AddComponent<EnemyMovementStraight>();
+        _objectMovementStraight  = gameObject.AddComponent<ObjectMovementStraight>();
             
         switch (dirSwitch)
         {
@@ -119,7 +119,7 @@ public class Enemy : MonoBehaviour
                 break;
         }
         
-        _enemyMovementStraight.SetVector(_currentVector);
+        _objectMovementStraight.SetVector(_currentVector);
         _fireRate = Random.Range(2.0f, 5.0f);
         _canFire = Time.time + _fireRate;
     }
@@ -190,23 +190,23 @@ public class Enemy : MonoBehaviour
             {
                 if (transform.position.x >= 0)
                 {
-                    _enemyMovementStraight.SetVector(_vectorDownLeft);
+                    _objectMovementStraight.SetVector(_vectorDownLeft);
                     _currentVector = _vectorDownLeft;
                 }
                 else
                 {
-                    _enemyMovementStraight.SetVector(_vectorDownRight);
+                    _objectMovementStraight.SetVector(_vectorDownRight);
                     _currentVector = _vectorDownLeft;
                 }
             }
             else if (_currentVector == _vectorDownLeft)
             {
-                _enemyMovementStraight.SetVector(_vectorDownRight);
+                _objectMovementStraight.SetVector(_vectorDownRight);
                 _currentVector = _vectorDownRight;
             }
             else if (_currentVector == _vectorDownRight)
             {
-                _enemyMovementStraight.SetVector(_vectorDownLeft);
+                _objectMovementStraight.SetVector(_vectorDownLeft);
                 _currentVector = _vectorDownLeft;
             }
 
